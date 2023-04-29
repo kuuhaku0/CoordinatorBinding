@@ -7,7 +7,14 @@
 
 import UIKit
 
-protocol Coordinator {
+protocol Coordinator: AnyObject {
 	func start()
+	var childCoordinators: [Coordinator] { get set }
 	var rootViewController: UIViewController { get set }
+}
+
+extension Coordinator {
+	func removeChild(child: Coordinator) {
+		childCoordinators.removeAll { $0 === child }
+	}
 }

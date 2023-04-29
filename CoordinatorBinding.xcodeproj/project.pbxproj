@@ -15,6 +15,14 @@
 		D26FBC4229FC8A42006B7E83 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC4129FC8A42006B7E83 /* Coordinator.swift */; };
 		D26FBC4529FC96C7006B7E83 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC4429FC96C7006B7E83 /* TabBarViewController.swift */; };
 		D26FBC4729FC98DD006B7E83 /* TabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC4629FC98DD006B7E83 /* TabBarViewModel.swift */; };
+		D26FBC4B29FCA2C1006B7E83 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = D26FBC4A29FCA2C1006B7E83 /* SnapKit */; };
+		D26FBC4D29FCA35A006B7E83 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC4C29FCA35A006B7E83 /* TabBarCoordinator.swift */; };
+		D26FBC4F29FCA6AA006B7E83 /* SentencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC4E29FCA6AA006B7E83 /* SentencesViewController.swift */; };
+		D26FBC5229FCA6ED006B7E83 /* SentencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC5129FCA6ED006B7E83 /* SentencesViewModel.swift */; };
+		D26FBC5429FCAC26006B7E83 /* SentencesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC5329FCAC26006B7E83 /* SentencesCoordinator.swift */; };
+		D26FBC5629FCB9B8006B7E83 /* SentenceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC5529FCB9B8006B7E83 /* SentenceDetailViewController.swift */; };
+		D26FBC5829FCB9CA006B7E83 /* SentenceDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC5729FCB9CA006B7E83 /* SentenceDetailViewModel.swift */; };
+		D26FBC5D29FCC196006B7E83 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC5C29FCC196006B7E83 /* Constant.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +36,13 @@
 		D26FBC4129FC8A42006B7E83 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		D26FBC4429FC96C7006B7E83 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		D26FBC4629FC98DD006B7E83 /* TabBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewModel.swift; sourceTree = "<group>"; };
+		D26FBC4C29FCA35A006B7E83 /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
+		D26FBC4E29FCA6AA006B7E83 /* SentencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentencesViewController.swift; sourceTree = "<group>"; };
+		D26FBC5129FCA6ED006B7E83 /* SentencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentencesViewModel.swift; sourceTree = "<group>"; };
+		D26FBC5329FCAC26006B7E83 /* SentencesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentencesCoordinator.swift; sourceTree = "<group>"; };
+		D26FBC5529FCB9B8006B7E83 /* SentenceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceDetailViewController.swift; sourceTree = "<group>"; };
+		D26FBC5729FCB9CA006B7E83 /* SentenceDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceDetailViewModel.swift; sourceTree = "<group>"; };
+		D26FBC5C29FCC196006B7E83 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D26FBC4B29FCA2C1006B7E83 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,7 +90,9 @@
 		D26FBC3D29FC882E006B7E83 /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				D26FBC5C29FCC196006B7E83 /* Constant.swift */,
 				D26FBC3E29FC8875006B7E83 /* TabBar */,
+				D26FBC5029FCA6AF006B7E83 /* Sentences */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -84,6 +102,7 @@
 			children = (
 				D26FBC4429FC96C7006B7E83 /* TabBarViewController.swift */,
 				D26FBC4629FC98DD006B7E83 /* TabBarViewModel.swift */,
+				D26FBC4C29FCA35A006B7E83 /* TabBarCoordinator.swift */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -93,6 +112,42 @@
 			children = (
 				D26FBC3F29FC8A0B006B7E83 /* AppCoordinator.swift */,
 				D26FBC4129FC8A42006B7E83 /* Coordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		D26FBC5029FCA6AF006B7E83 /* Sentences */ = {
+			isa = PBXGroup;
+			children = (
+				D26FBC5B29FCB9EC006B7E83 /* Coordinator */,
+				D26FBC5A29FCB9E0006B7E83 /* SentenceList */,
+				D26FBC5929FCB9D0006B7E83 /* SentenceDetail */,
+			);
+			path = Sentences;
+			sourceTree = "<group>";
+		};
+		D26FBC5929FCB9D0006B7E83 /* SentenceDetail */ = {
+			isa = PBXGroup;
+			children = (
+				D26FBC5529FCB9B8006B7E83 /* SentenceDetailViewController.swift */,
+				D26FBC5729FCB9CA006B7E83 /* SentenceDetailViewModel.swift */,
+			);
+			path = SentenceDetail;
+			sourceTree = "<group>";
+		};
+		D26FBC5A29FCB9E0006B7E83 /* SentenceList */ = {
+			isa = PBXGroup;
+			children = (
+				D26FBC4E29FCA6AA006B7E83 /* SentencesViewController.swift */,
+				D26FBC5129FCA6ED006B7E83 /* SentencesViewModel.swift */,
+			);
+			path = SentenceList;
+			sourceTree = "<group>";
+		};
+		D26FBC5B29FCB9EC006B7E83 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				D26FBC5329FCAC26006B7E83 /* SentencesCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -113,6 +168,9 @@
 			dependencies = (
 			);
 			name = "Coordinator Binding";
+			packageProductDependencies = (
+				D26FBC4A29FCA2C1006B7E83 /* SnapKit */,
+			);
 			productName = "Coordinator Binding";
 			productReference = D2029E5F29F98701006B94D7 /* Coordinator Binding.app */;
 			productType = "com.apple.product-type.application";
@@ -142,6 +200,7 @@
 			);
 			mainGroup = D2029E5629F98701006B94D7;
 			packageReferences = (
+				D26FBC4929FCA2C1006B7E83 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = D2029E6029F98701006B94D7 /* Products */;
 			projectDirPath = "";
@@ -169,10 +228,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D26FBC5829FCB9CA006B7E83 /* SentenceDetailViewModel.swift in Sources */,
 				D26FBC4029FC8A0B006B7E83 /* AppCoordinator.swift in Sources */,
+				D26FBC5429FCAC26006B7E83 /* SentencesCoordinator.swift in Sources */,
 				D26FBC4229FC8A42006B7E83 /* Coordinator.swift in Sources */,
+				D26FBC5629FCB9B8006B7E83 /* SentenceDetailViewController.swift in Sources */,
 				D2029E6329F98701006B94D7 /* AppDelegate.swift in Sources */,
+				D26FBC4F29FCA6AA006B7E83 /* SentencesViewController.swift in Sources */,
+				D26FBC4D29FCA35A006B7E83 /* TabBarCoordinator.swift in Sources */,
 				D26FBC4529FC96C7006B7E83 /* TabBarViewController.swift in Sources */,
+				D26FBC5D29FCC196006B7E83 /* Constant.swift in Sources */,
+				D26FBC5229FCA6ED006B7E83 /* SentencesViewModel.swift in Sources */,
 				D26FBC4729FC98DD006B7E83 /* TabBarViewModel.swift in Sources */,
 				D2029E6529F98701006B94D7 /* SceneDelegate.swift in Sources */,
 			);
@@ -315,12 +381,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Coordinator Binding/Info.plist";
+				INFOPLIST_FILE = CoordinatorBinding/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -344,12 +410,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Coordinator Binding/Info.plist";
+				INFOPLIST_FILE = CoordinatorBinding/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -386,6 +452,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D26FBC4929FCA2C1006B7E83 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D26FBC4A29FCA2C1006B7E83 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D26FBC4929FCA2C1006B7E83 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D2029E5729F98701006B94D7 /* Project object */;
 }

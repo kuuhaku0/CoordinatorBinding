@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/tylerzhao/Desktop/Coordinator Binding/CoordinatorBinding.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>

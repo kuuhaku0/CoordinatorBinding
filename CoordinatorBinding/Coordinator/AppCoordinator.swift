@@ -9,18 +9,26 @@ import UIKit
 
 class AppCoordinator: Coordinator {
 
+
 	let window: UIWindow
 	var childCoordinators = [Coordinator]()
-	var rootViewController: UIViewController
+	lazy var rootViewController: UIViewController = createRootScene()
 
 	init(window: UIWindow) {
-		self.rootViewController = UINavigationController()
 		self.window = window
 	}
 
 	func start() {
-//		let mainTabBarCoordinator = TabBarCoordinator(nav: UINavigationController())
-//		self.childCoordinators = [mainTabBarCoordinator]
 		window.rootViewController = rootViewController
+	}
+
+	func createRootScene() -> UIViewController {
+		let rootNav = UINavigationController()
+		let mainTabBarCoordinator = TabBarCoordinator(nav: rootNav)
+		mainTabBarCoordinator.start()
+		
+		self.childCoordinators = [mainTabBarCoordinator]
+		rootNav.setViewControllers([mainTabBarCoordinator.rootViewController], animated: false)
+		return rootNav
 	}
 }

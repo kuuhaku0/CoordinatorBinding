@@ -5,41 +5,46 @@
 //  Created by Tyler Zhao on 4/28/23.
 //
 
+import SnapKit
 import UIKit
 
 struct Word: Hashable {
-	let title: String
+	let id: UUID = UUID()
+	let text: String
 }
 
-struct PickedWords: Hashable {
+struct Sentence: Hashable {
+	let id: UUID = UUID()
 	let words: [Word]
 }
 
 class TabBarViewController: UITabBarController {
-	typealias DataSource = UICollectionViewDiffableDataSource<PickedWords, Word>
+	typealias DataSource = UICollectionViewDiffableDataSource<Int, Word>
 
 	private lazy var dataSource = makeDataSource()
-	private lazy var currentSnapshot = makeSnapshot()
+	private lazy var currentSnapshot = makeSnapshot(words: [])
 
 	private lazy var collectionView: UICollectionView = {
 		let layout = UICollectionViewFlowLayout()
 		layout.scrollDirection = .horizontal
-		layout.itemSize = .init(width: 50, height: 50)
+		layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
 
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
 		collectionView.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-		collectionView.backgroundColor = .clear
 		collectionView.showsHorizontalScrollIndicator = false
 		return collectionView
 	}()
 
-	let viewModel: TabBarViewModel
+	private let viewModel: TabBarViewModel
+	private var cancelBag = CancelBag()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewDidLoad() {
+		super.viewDidLoad()
 		setupUI()
-    }
+		setupNav()
+		bindViewModel()
+	}
 
 	init(viewModel: TabBarViewModel) {
 		self.viewModel = viewModel
@@ -50,8 +55,38 @@ class TabBarViewController: UITabBarController {
 		fatalError("init(coder:) has not been implemented")
 	}
 
+	private func bindViewModel() {
+		let outputs = viewModel.transform()
+
+		outputs
+			.receive(on: DispatchQueue.main)
+			.sink { [unowned self] words in
+				currentSnapshot = makeSnapshot(words: words)
+				dataSource.apply(currentSnapshot)
+			}.store(in: &cancelBag)
+
+		
+	}
+
 	private func setupUI() {
+		view.addSubview(collectionView)
+
+		collectionView.snp.makeConstraints { make in
+			make.height.equalTo(60)
+			make.leading.trailing.equalToSuperview()
+			make.bottom.equalToSuperview { $0.safeAreaLayoutGuide }.inset(48)
+		}
+
 		collectionView.dataSource = dataSource
+		dataSource.apply(currentSnapshot)
+	}
+
+	private func setupNav() {
+		let rNavBtn = UIBarButtonItem(title: "Shuffle", style: .done, target: self, action: #selector(shuffle))
+		navigationItem.setRightBarButton(rNavBtn, animated: false)
+	}
+
+	@objc private func shuffle() {
 
 	}
 
@@ -65,13 +100,17 @@ class TabBarViewController: UITabBarController {
 		}
 	}
 
-	private func makeSnapshot() -> NSDiffableDataSourceSnapshot<PickedWords, Word> {
-		var snapshot = NSDiffableDataSourceSnapshot<PickedWords, Word>()
-		viewModel.pickedWords.forEach {
-			snapshot.appendSections([$0])
-			snapshot.appendItems($0.words)
-		}
+	private func makeSnapshot(words: [Word]) -> NSDiffableDataSourceSnapshot<Int, Word> {
+		var snapshot = NSDiffableDataSourceSnapshot<Int, Word>()
+		snapshot.appendSections([0])
+		snapshot.appendItems(viewModel.words)
 		return snapshot
+	}
+}
+
+extension TabBarViewController: UICollectionViewDelegateFlowLayout {
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+		UICollectionViewFlowLayout.automaticSize
 	}
 }
 
@@ -81,6 +120,9 @@ class WordCollectionCell: UICollectionViewCell {
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		setupUI()
+		layer.cornerRadius = 12
+		clipsToBounds = true
+		backgroundColor = .white
 	}
 
 	required init?(coder: NSCoder) {
@@ -88,11 +130,16 @@ class WordCollectionCell: UICollectionViewCell {
 	}
 
 	private func setupUI() {
+		label.textColor = .black
+		label.setContentHuggingPriority(.required, for: .vertical)
 		contentView.addSubview(label)
-
+		label.snp.makeConstraints { make in
+			make.leading.trailing.equalToSuperview().inset(12)
+			make.centerY.equalToSuperview()
+		}
 	}
 
 	func configure(word: Word) {
-		label.text = word.title
+		label.text = word.text
 	}
 }
