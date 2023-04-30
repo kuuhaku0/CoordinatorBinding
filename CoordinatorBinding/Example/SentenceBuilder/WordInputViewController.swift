@@ -11,7 +11,9 @@ import UIKit
 class WordInputViewController: UIViewController {
 	struct Output {
 		let textDidChange = CurrentValueSubject<String, Never>("")
-		let publishWord = JustPassthrough<Word>()
+		let publishWord = JustPassthrough<Word?>()
+		let replaceWord = JustPassthrough<(oldWord: Word, newWord: Word)>()
+		let buildSentence = VoidPassthrough()
 		let rewind = VoidPassthrough()
 	}
 
@@ -23,8 +25,14 @@ class WordInputViewController: UIViewController {
 		tf.delegate = self
 		tf.textColor = .blue
 		tf.autocorrectionType = .no
+		tf.autocapitalizationType = .none
 		return tf
 	}()
+
+	lazy var createButton = UIButton(type: .roundedRect, primaryAction: UIAction(
+		title: "Construct Sentence", handler: { [unowned self] _ in
+			constructSentence()
+		}))
 
 	private var cancelBag = CancelBag()
 	private let outputs = Output()
@@ -32,18 +40,23 @@ class WordInputViewController: UIViewController {
 	var forwardPassthrough = VoidPassthrough()
 	var backwardPassthrough = VoidPassthrough()
 
+	let prefill: Word?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 		setupUI()
-		textField.becomeFirstResponder()
     }
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		UIView.performWithoutAnimation {
+			textField.becomeFirstResponder()
+		}
 		outputs.textDidChange.send(textField.text ?? "")
 	}
 
 	init(word: Word?) {
+		self.prefill = word
 		super.init(nibName: nil, bundle: nil)
 		textField.text = word?.text
 		outputs.textDidChange.send(word?.text ?? "")
@@ -63,6 +76,12 @@ class WordInputViewController: UIViewController {
 			make.leading.trailing.equalToSuperview().inset(32)
 			make.height.equalTo(44)
 		}
+
+		view.addSubview(createButton)
+		createButton.snp.makeConstraints { make in
+			make.centerX.equalToSuperview()
+			make.top.equalTo(textField.snp.bottom).offset(16)
+		}
 	}
 
 	func transform(input: SentenceBuilderActions) -> Output {
@@ -73,14 +92,32 @@ class WordInputViewController: UIViewController {
 
 		forwardPassthrough
 			.sink { [unowned self] in
-				guard navigationController?.topViewController == self else { return }
 				let text = outputs.textDidChange.value
 				guard !text.isEmpty else { return }
+				
+				let word = Word(text: text)
 
-				outputs.publishWord.send(Word(text: text))
+				guard let prefill else {
+					outputs.publishWord.send(word)
+					return
+				}
+
+				if prefill.text == text {
+					outputs.publishWord.send(nil)
+				} else {
+					outputs.replaceWord.send((oldWord: prefill, newWord: word))
+				}
+
 			}.store(in: &cancelBag)
 
 		return outputs
+	}
+
+
+
+	private func constructSentence() {
+		forwardPassthrough.send()
+		outputs.buildSentence.send()
 	}
 }
 

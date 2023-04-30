@@ -34,6 +34,7 @@ class SentenceViewController: UIViewController {
 	private var cancelBag = CancelBag()
 
 	private lazy var dataSource = createDataSource()
+	private var setNeedsUpdate = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,12 +48,26 @@ class SentenceViewController: UIViewController {
 		super.init(nibName: nil, bundle: nil)
 	}
 
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		if setNeedsUpdate {
+			DispatchQueue.main.async {
+				self.dataSource.apply(self.createSnapshot())
+			}
+		}
+	}
+
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 
 	private func bindViewModel() {
 		let outputs = viewModel.transform(input: events)
+
+		viewModel.$sentences
+			.sink { [unowned self] _ in
+				setNeedsUpdate = true
+			}.store(in: &cancelBag)
 
 		Publishers.Merge(
 			outputs.selectSentence,
@@ -112,6 +127,7 @@ class SentenceTableCell: UITableViewCell {
 
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
+		selectionStyle = .none
 		setupUI()
 	}
 

@@ -16,6 +16,12 @@ class TabBarViewModel {
 
 	func perform(actions: SentencesActions) -> JustPassthrough<Int> {
 		actions
+			.onCreateSentence
+			.sink { [unowned self] newSentence in
+				words = newSentence.words
+			}.store(in: &cancelBag)
+
+		actions
 			.selectSentence
 			.map(\.words)
 			.assign(to: &$words)

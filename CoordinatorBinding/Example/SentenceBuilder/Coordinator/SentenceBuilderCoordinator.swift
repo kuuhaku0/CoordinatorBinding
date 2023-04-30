@@ -8,43 +8,9 @@
 import Combine
 import UIKit
 
-class SentenceBuilderDataManager {
-	struct Output {
-		let newWordAccepted: AnyPublisher<Word, Never>
-	}
-
-	@Published private(set) var allSentences: [Sentence] = prefill
-
-	// Word Constructor
-	@Published private(set) var currentWords: [Word] = []
-	@Published var latestWord: Word = Word(text: "")
-
-	let onNewWordAccepted = JustPassthrough<Word>()
-	let onNewSentenceCreated = JustPassthrough<Sentence>()
-
-	func bind() -> Output {
-		return Output(newWordAccepted: onNewWordAccepted.eraseToAnyPublisher())
-	}
-
-	func constructSentence() {
-		let newSentence = Sentence(words: currentWords)
-		currentWords = []
-		allSentences.append(newSentence)
-	}
-
-	func selectSentence(_ sentence: Sentence) {
-		currentWords = sentence.words
-	}
-
-	func acceptNewWord(_ word: Word) {
-		onNewWordAccepted.send(word)
-	}
-}
-
 struct SentenceBuilderActions {
-	let wordSelectedAtIndex = JustPassthrough<Int>()
 	let setNavButtonState = JustPassthrough<SentenceBuilderNav.ButtonStatus>()
-	let onTermination = VoidPassthrough()
+	let onTermination = JustPassthrough<Sentence?>()
 }
 
 protocol SentenceBuildable: AnyObject {
@@ -72,16 +38,17 @@ final class SentenceBuilderCoordinator: Coordinator {
 	func start() {
 		let dataBindings = dataManager.bind()
 
-		dataBindings.newWordAccepted
-			.sink { [unowned self] _ in
-				prepareNextScene()
+		dataBindings.newSentenceCreated
+			.sink { [unowned self] sentence in
+				actionables.onTermination.send(sentence)
 			}.store(in: &cancelBag)
 
 		navigationController.setViewControllers([createBuildWordScene(word: nil)], animated: false)
 	}
 
-	func comform(input: JustPassthrough<Int>) -> SentenceBuilderActions {
-		input
+	// Example of single input
+	func comform(selectedWordAtIndex: JustPassthrough<Int>) -> SentenceBuilderActions {
+		selectedWordAtIndex
 			.receive(on: DispatchQueue.main)
 			.sink { [unowned self] index in
 				constructNavStack(selection: index)
@@ -110,16 +77,10 @@ final class SentenceBuilderCoordinator: Coordinator {
 		navigationController.setViewControllers(stack, animated: false)
 	}
 
-	func buildScenes() -> [UIViewController] {
-		dataManager.currentWords.map { word in
-			createBuildWordScene(word: word)
-		}
-	}
-
 	func popLast() {
 		if navigationController.viewControllers.count == 1 {
 			navigationController.dismiss(animated: true)
-			actionables.onTermination.send()
+			actionables.onTermination.send(nil)
 		} else {
 			navigationController.popViewController(animated: true)
 		}
@@ -153,6 +114,7 @@ extension SentenceBuilderCoordinator {
 		let reactions = startVC.transform(input: actionables)
 		
 		reactions.textDidChange
+			.receive(on: DispatchQueue.main)
 			.sink { [unowned self] text in
 				actionables.setNavButtonState.send(
 					.forward(enable: !text.isEmpty, hidden: false)
@@ -160,7 +122,24 @@ extension SentenceBuilderCoordinator {
 			}.store(in: &cancelBag)
 
 		reactions.publishWord
-			.sink(receiveValue: dataManager.acceptNewWord(_:))
+			.sink { [unowned self] newWord in
+				prepareNextScene()
+				guard let newWord else { return }
+				dataManager.acceptNewWord(newWord)
+			}
+			.store(in: &cancelBag)
+
+		reactions.replaceWord
+			.sink { [unowned self] replacement in
+				prepareNextScene()
+				dataManager.replaceWord(old: replacement.oldWord, new: replacement.newWord)
+			}
+			.store(in: &cancelBag)
+
+		reactions.buildSentence
+			.sink { [unowned self] in
+				dataManager.constructSentence()
+			}
 			.store(in: &cancelBag)
 
 		reactions.rewind

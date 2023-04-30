@@ -9,7 +9,6 @@ import Combine
 import UIKit
 
 final class SentencesCoordinator: Coordinator {
-
 	var childCoordinators: [Coordinator] = []
 	lazy var rootViewController: UIViewController = createSentencesScene()
 	let navigationController: UINavigationController
@@ -24,15 +23,17 @@ final class SentencesCoordinator: Coordinator {
 	}
 
 	func start() {
-
+		print(String(describing: self), "Start")
 	}
 
 	func conform(rules: SentencesActions) -> SentencesActions {
+		rules.onCreateSentence
+			.sink { [unowned self] in
+				actionables.onCreateSentence.send($0)
+			}
+			.store(in: &cancelBag)
+
 		return actionables
-	}
-
-	func goToSentenceDetail(sentence: Sentence) {
-
 	}
 }
 
@@ -44,9 +45,7 @@ extension SentencesCoordinator {
 		let reactions = viewModel.perform(action: actionables)
 
 		reactions.deleteSentence
-			.sink { [unowned self] sentence in
-				actionables.deleteSentence.send(sentence)
-			}
+			.sink(receiveValue: actionables.deleteSentence.send(_:))
 			.store(in: &cancelBag)
 
 		reactions.selectSentence

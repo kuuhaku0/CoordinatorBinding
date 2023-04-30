@@ -27,7 +27,11 @@ final class TabBarCoordinator: Coordinator {
 		navigationController.setViewControllers([rootViewController], animated: false)
 	}
 
-	func goToSentenceBuilder() {
+	func goToSentenceBuilder(createNew: Bool) {
+		if createNew {
+			dataManager.setCreateNewSentence()
+		}
+
 		let vc = makeSentenceBuilderScene()
 		vc.modalPresentationStyle = .fullScreen
 		navigationController.present(vc, animated: true)
@@ -48,7 +52,7 @@ extension TabBarCoordinator {
 
 		reactions
 			.sink {[unowned self] index in
-				goToSentenceBuilder()
+				goToSentenceBuilder(createNew: false)
 				actionables.onSelectWordAtIndex.send(index)
 			}
 			.store(in: &cancelBag)
@@ -66,15 +70,15 @@ extension TabBarCoordinator {
 
 		behaviors
 			.deleteSentence
-			.sink { [unowned self] sentence in
-				actionables.deleteSentence.send(sentence)
+			.sink { [unowned self] in
+				actionables.deleteSentence.send($0)
 			}
 			.store(in: &cancelBag)
 
 		behaviors
 			.selectSentence
-			.sink { [unowned self] sentence in
-				actionables.selectSentence.send(sentence)
+			.sink { [unowned self] in
+				actionables.selectSentence.send($0)
 			}
 			.store(in: &cancelBag)
 
@@ -94,7 +98,7 @@ extension TabBarCoordinator {
 		behaviors
 			.createNewSentence
 			.sink { [unowned self] in
-				goToSentenceBuilder()
+				goToSentenceBuilder(createNew: true)
 			}.store(in: &cancelBag)
 
 		childCoordinators.append(coordinator)
@@ -108,12 +112,16 @@ extension TabBarCoordinator {
 
 	func makeSentenceBuilderScene() -> UIViewController {
 		let coordinator = SentenceBuilderCoordinator(dataManager: dataManager)
-		let behaviors = coordinator.comform(input: actionables.onSelectWordAtIndex)
+		let behaviors = coordinator.comform(selectedWordAtIndex: actionables.onSelectWordAtIndex)
 
 		behaviors.onTermination
-			.sink { [unowned self, unowned coordinator] in
-				// *** Note `unowned coordinator`
+			.sink { [unowned self, unowned coordinator] sentence in
+				// *** Note the `unowned coordinator`
 				// *** It is important we capture weak reference when using references outside of `sink`
+				if let sentence {
+					actionables.onCreateSentence.send(sentence)
+				}
+
 				coordinator.rootViewController.dismiss(animated: true)
 				removeChild(child: coordinator)
 			}.store(in: &cancelBag)

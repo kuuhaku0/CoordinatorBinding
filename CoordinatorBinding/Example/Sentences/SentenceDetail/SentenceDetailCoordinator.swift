@@ -27,10 +27,15 @@ final class SentenceDetailCoordinator: Coordinator {
 			.store(in: &cancelBag)
 
 		rules.deleteSentence
-			.sink { [unowned self] _ in
-				actionables.sentenceSelected.send(nil)
+			.sink { [unowned self] deletion in
+				actionables.sentenceDeleted.send(deletion)
 			}
 			.store(in: &cancelBag)
+
+		rules.onCreateSentence
+			.sink { [unowned self] sentence in
+				actionables.sentenceSelected.send(sentence)
+			}.store(in: &cancelBag)
 
 		return actionables
 	}
