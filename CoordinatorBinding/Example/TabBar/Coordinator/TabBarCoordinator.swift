@@ -31,15 +31,13 @@ extension TabBarCoordinator {
 	func createTabBarController() -> UIViewController {
 		let viewModel = TabBarViewModel()
 		let tabVC = TabBarViewController(viewModel: viewModel)
-		tabVC.setViewControllers(
-			[
-				makeSentencesScene()
-			],
-			animated: false
-		)
+
+		tabVC.setViewControllers([
+			makeSentencesScene(),
+			makeSentenceDetailScene()
+		], animated: false)
 
 		viewModel.perform(actions: actionables)
-
 		return tabVC
 	}
 
@@ -60,9 +58,30 @@ extension TabBarCoordinator {
 		childCoordinators.append(coordinator)
 		coordinator.start()
 
-		let tabItem = UITabBarItem(title: "Sentences", image: nil, tag: 0)
+		let tabItem = UITabBarItem(title: "Sentences", image: .checkmark, tag: 0)
 		let vc = coordinator.rootViewController
 		vc.tabBarItem = tabItem
 		return vc
+	}
+
+	func makeSentenceDetailScene() -> UIViewController {
+		let coordinator = SentenceDetailCoordinator()
+
+		childCoordinators.append(coordinator)
+		coordinator.start()
+
+		let tabItem = UITabBarItem(title: "Builder", image: .add, tag: 1)
+		let vc = coordinator.rootViewController
+		vc.tabBarItem = tabItem
+		return vc
+	}
+
+	func makeSentenceBuilderScene() -> UIViewController {
+		let coordinator = SentenceBuilderCoordinator()
+
+		childCoordinators.append(coordinator)
+		coordinator.start()
+
+		return coordinator.rootViewController
 	}
 }
