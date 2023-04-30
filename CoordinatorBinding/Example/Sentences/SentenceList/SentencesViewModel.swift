@@ -7,12 +7,11 @@
 
 import Combine
 
-typealias CancelBag = Set<AnyCancellable>
-
 struct SentencesActions {
-	let selectSentence = PassthroughSubject<Sentence, Never>()
-	let deleteSentence = PassthroughSubject<Sentence, Never>()
-	let onCreateSentence = PassthroughSubject<Sentence, Never>()
+	let selectSentence = JustPassthrough<Sentence>()
+	let deleteSentence = JustPassthrough<Sentence>()
+	let onCreateSentence = JustPassthrough<Sentence>()
+	let onSelectWordAtIndex = JustPassthrough<Int>()
 }
 
 class SentencesViewModel {
@@ -34,7 +33,9 @@ class SentencesViewModel {
 	func transform(input: SentencesViewInputs) -> SentencesActions {
 		input.didSelectSentenceAt
 			.map { index in self.sentences[index] }
-			.sink(receiveValue: actions.selectSentence.send(_:))
+			.sink { [unowned self] sentence in
+				actions.selectSentence.send(sentence)
+			}
 			.store(in: &cancelBag)
 
 		input.deleteSentenceAt

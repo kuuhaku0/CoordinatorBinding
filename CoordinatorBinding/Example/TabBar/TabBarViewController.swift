@@ -33,6 +33,7 @@ class TabBarViewController: UITabBarController {
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
 		collectionView.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
 		collectionView.showsHorizontalScrollIndicator = false
+		collectionView.delegate = self
 		return collectionView
 	}()
 
@@ -56,16 +57,12 @@ class TabBarViewController: UITabBarController {
 	}
 
 	private func bindViewModel() {
-		let outputs = viewModel.transform()
-
-		outputs
+		viewModel.$words
 			.receive(on: DispatchQueue.main)
 			.sink { [unowned self] words in
 				currentSnapshot = makeSnapshot(words: words)
 				dataSource.apply(currentSnapshot)
 			}.store(in: &cancelBag)
-
-		
 	}
 
 	private func setupUI() {
@@ -109,8 +106,8 @@ class TabBarViewController: UITabBarController {
 }
 
 extension TabBarViewController: UICollectionViewDelegateFlowLayout {
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		UICollectionViewFlowLayout.automaticSize
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		viewModel.didSelectItemAt.send(indexPath.row)
 	}
 }
 

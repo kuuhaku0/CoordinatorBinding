@@ -16,5 +16,6 @@ protocol Coordinator: AnyObject {
 extension Coordinator {
 	func removeChild(child: Coordinator) {
 		childCoordinators.removeAll { $0 === child }
+		print(childCoordinators.description)
 	}
 }

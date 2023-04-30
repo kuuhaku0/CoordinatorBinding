@@ -9,11 +9,12 @@ import Combine
 import Foundation
 
 class TabBarViewModel {
-
 	@Published private(set) var words: [Word] = []
 	private var cancelBag = CancelBag()
 
-	func perform(actions: SentencesActions) {
+	let didSelectItemAt = JustPassthrough<Int>()
+
+	func perform(actions: SentencesActions) -> JustPassthrough<Int> {
 		actions
 			.selectSentence
 			.map(\.words)
@@ -24,9 +25,7 @@ class TabBarViewModel {
 			.sink { [unowned self] sentence in
 				words = words == sentence.words ? [] : words
 			}.store(in: &cancelBag)
-	}
 
-	func transform() -> AnyPublisher<[Word], Never> {
-		$words.eraseToAnyPublisher()
+		return didSelectItemAt
 	}
 }

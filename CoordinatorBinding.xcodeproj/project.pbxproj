@@ -23,6 +23,12 @@
 		D26FBC5629FCB9B8006B7E83 /* SentenceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC5529FCB9B8006B7E83 /* SentenceDetailViewController.swift */; };
 		D26FBC5829FCB9CA006B7E83 /* SentenceDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC5729FCB9CA006B7E83 /* SentenceDetailViewModel.swift */; };
 		D26FBC5D29FCC196006B7E83 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC5C29FCC196006B7E83 /* Constant.swift */; };
+		D26FBC5F29FDA44D006B7E83 /* SentenceBuilderCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC5E29FDA44D006B7E83 /* SentenceBuilderCoordinator.swift */; };
+		D26FBC6229FDA476006B7E83 /* SentenceBuilderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC6129FDA476006B7E83 /* SentenceBuilderViewModel.swift */; };
+		D26FBC6429FDA49C006B7E83 /* WordInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC6329FDA49C006B7E83 /* WordInputViewController.swift */; };
+		D26FBC6629FDA58B006B7E83 /* SentenceBuilderNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC6529FDA58B006B7E83 /* SentenceBuilderNav.swift */; };
+		D26FBC6829FDCE10006B7E83 /* TypeAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC6729FDCE10006B7E83 /* TypeAlias.swift */; };
+		D26FBC6B29FDD681006B7E83 /* SentenceDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC6A29FDD681006B7E83 /* SentenceDetailCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +49,12 @@
 		D26FBC5529FCB9B8006B7E83 /* SentenceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceDetailViewController.swift; sourceTree = "<group>"; };
 		D26FBC5729FCB9CA006B7E83 /* SentenceDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceDetailViewModel.swift; sourceTree = "<group>"; };
 		D26FBC5C29FCC196006B7E83 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		D26FBC5E29FDA44D006B7E83 /* SentenceBuilderCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceBuilderCoordinator.swift; sourceTree = "<group>"; };
+		D26FBC6129FDA476006B7E83 /* SentenceBuilderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceBuilderViewModel.swift; sourceTree = "<group>"; };
+		D26FBC6329FDA49C006B7E83 /* WordInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordInputViewController.swift; sourceTree = "<group>"; };
+		D26FBC6529FDA58B006B7E83 /* SentenceBuilderNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceBuilderNav.swift; sourceTree = "<group>"; };
+		D26FBC6729FDCE10006B7E83 /* TypeAlias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAlias.swift; sourceTree = "<group>"; };
+		D26FBC6A29FDD681006B7E83 /* SentenceDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceDetailCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,9 +102,11 @@
 		D26FBC3D29FC882E006B7E83 /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				D26FBC6729FDCE10006B7E83 /* TypeAlias.swift */,
 				D26FBC5C29FCC196006B7E83 /* Constant.swift */,
 				D26FBC3E29FC8875006B7E83 /* TabBar */,
 				D26FBC5029FCA6AF006B7E83 /* Sentences */,
+				D26FBC6029FDA451006B7E83 /* SentenceBuilder */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -100,9 +114,9 @@
 		D26FBC3E29FC8875006B7E83 /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
+				D26FBC6D29FDDE50006B7E83 /* Coordinator */,
 				D26FBC4429FC96C7006B7E83 /* TabBarViewController.swift */,
 				D26FBC4629FC98DD006B7E83 /* TabBarViewModel.swift */,
-				D26FBC4C29FCA35A006B7E83 /* TabBarCoordinator.swift */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -129,6 +143,7 @@
 		D26FBC5929FCB9D0006B7E83 /* SentenceDetail */ = {
 			isa = PBXGroup;
 			children = (
+				D26FBC6A29FDD681006B7E83 /* SentenceDetailCoordinator.swift */,
 				D26FBC5529FCB9B8006B7E83 /* SentenceDetailViewController.swift */,
 				D26FBC5729FCB9CA006B7E83 /* SentenceDetailViewModel.swift */,
 			);
@@ -148,6 +163,33 @@
 			isa = PBXGroup;
 			children = (
 				D26FBC5329FCAC26006B7E83 /* SentencesCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		D26FBC6029FDA451006B7E83 /* SentenceBuilder */ = {
+			isa = PBXGroup;
+			children = (
+				D26FBC6929FDCEBE006B7E83 /* Coordinator */,
+				D26FBC6129FDA476006B7E83 /* SentenceBuilderViewModel.swift */,
+				D26FBC6329FDA49C006B7E83 /* WordInputViewController.swift */,
+				D26FBC6529FDA58B006B7E83 /* SentenceBuilderNav.swift */,
+			);
+			path = SentenceBuilder;
+			sourceTree = "<group>";
+		};
+		D26FBC6929FDCEBE006B7E83 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				D26FBC5E29FDA44D006B7E83 /* SentenceBuilderCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		D26FBC6D29FDDE50006B7E83 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				D26FBC4C29FCA35A006B7E83 /* TabBarCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -228,14 +270,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D26FBC5F29FDA44D006B7E83 /* SentenceBuilderCoordinator.swift in Sources */,
+				D26FBC6629FDA58B006B7E83 /* SentenceBuilderNav.swift in Sources */,
 				D26FBC5829FCB9CA006B7E83 /* SentenceDetailViewModel.swift in Sources */,
 				D26FBC4029FC8A0B006B7E83 /* AppCoordinator.swift in Sources */,
+				D26FBC6429FDA49C006B7E83 /* WordInputViewController.swift in Sources */,
 				D26FBC5429FCAC26006B7E83 /* SentencesCoordinator.swift in Sources */,
+				D26FBC6B29FDD681006B7E83 /* SentenceDetailCoordinator.swift in Sources */,
 				D26FBC4229FC8A42006B7E83 /* Coordinator.swift in Sources */,
 				D26FBC5629FCB9B8006B7E83 /* SentenceDetailViewController.swift in Sources */,
 				D2029E6329F98701006B94D7 /* AppDelegate.swift in Sources */,
+				D26FBC6229FDA476006B7E83 /* SentenceBuilderViewModel.swift in Sources */,
 				D26FBC4F29FCA6AA006B7E83 /* SentencesViewController.swift in Sources */,
 				D26FBC4D29FCA35A006B7E83 /* TabBarCoordinator.swift in Sources */,
+				D26FBC6829FDCE10006B7E83 /* TypeAlias.swift in Sources */,
 				D26FBC4529FC96C7006B7E83 /* TabBarViewController.swift in Sources */,
 				D26FBC5D29FCC196006B7E83 /* Constant.swift in Sources */,
 				D26FBC5229FCA6ED006B7E83 /* SentencesViewModel.swift in Sources */,

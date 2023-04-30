@@ -14,6 +14,8 @@ final class TabBarCoordinator: Coordinator {
 	lazy var rootViewController: UIViewController = createTabBarController()
 	let navigationController: UINavigationController
 
+	let dataManager = SentenceBuilderDataManager()
+
 	init(nav: UINavigationController) {
 		navigationController = nav
 	}
@@ -24,10 +26,15 @@ final class TabBarCoordinator: Coordinator {
 	func start() {
 		navigationController.setViewControllers([rootViewController], animated: false)
 	}
+
+	func goToSentenceBuilder() {
+		let vc = makeSentenceBuilderScene()
+		vc.modalPresentationStyle = .fullScreen
+		navigationController.present(vc, animated: true)
+	}
 }
 
 extension TabBarCoordinator {
-
 	func createTabBarController() -> UIViewController {
 		let viewModel = TabBarViewModel()
 		let tabVC = TabBarViewController(viewModel: viewModel)
@@ -37,22 +44,38 @@ extension TabBarCoordinator {
 			makeSentenceDetailScene()
 		], animated: false)
 
-		viewModel.perform(actions: actionables)
+		let reactions = viewModel.perform(actions: actionables)
+
+		reactions
+			.sink {[unowned self] index in
+				goToSentenceBuilder()
+				actionables.onSelectWordAtIndex.send(index)
+			}
+			.store(in: &cancelBag)
+
 		return tabVC
 	}
 
 	func makeSentencesScene() -> UIViewController {
-		let coordinator = SentencesCoordinator(nav: navigationController)
+		let coordinator = SentencesCoordinator(
+			nav: navigationController,
+			dataManager: dataManager
+		)
+
 		let behaviors = coordinator.conform(rules: actionables)
 
 		behaviors
 			.deleteSentence
-			.sink(receiveValue: actionables.deleteSentence.send(_:))
+			.sink { [unowned self] sentence in
+				actionables.deleteSentence.send(sentence)
+			}
 			.store(in: &cancelBag)
 
 		behaviors
 			.selectSentence
-			.sink(receiveValue: actionables.selectSentence.send(_:))
+			.sink { [unowned self] sentence in
+				actionables.selectSentence.send(sentence)
+			}
 			.store(in: &cancelBag)
 
 		childCoordinators.append(coordinator)
@@ -66,6 +89,13 @@ extension TabBarCoordinator {
 
 	func makeSentenceDetailScene() -> UIViewController {
 		let coordinator = SentenceDetailCoordinator()
+		let behaviors = coordinator.comform(rules: actionables)
+
+		behaviors
+			.createNewSentence
+			.sink { [unowned self] in
+				goToSentenceBuilder()
+			}.store(in: &cancelBag)
 
 		childCoordinators.append(coordinator)
 		coordinator.start()
@@ -77,7 +107,16 @@ extension TabBarCoordinator {
 	}
 
 	func makeSentenceBuilderScene() -> UIViewController {
-		let coordinator = SentenceBuilderCoordinator()
+		let coordinator = SentenceBuilderCoordinator(dataManager: dataManager)
+		let behaviors = coordinator.comform(input: actionables.onSelectWordAtIndex)
+
+		behaviors.onTermination
+			.sink { [unowned self, unowned coordinator] in
+				// *** Note `unowned coordinator`
+				// *** It is important we capture weak reference when using references outside of `sink`
+				coordinator.rootViewController.dismiss(animated: true)
+				removeChild(child: coordinator)
+			}.store(in: &cancelBag)
 
 		childCoordinators.append(coordinator)
 		coordinator.start()

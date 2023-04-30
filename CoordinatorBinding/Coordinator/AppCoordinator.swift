@@ -27,7 +27,7 @@ class AppCoordinator: Coordinator {
 		let mainTabBarCoordinator = TabBarCoordinator(nav: rootNav)
 		mainTabBarCoordinator.start()
 		
-		self.childCoordinators = [mainTabBarCoordinator]
+		childCoordinators.append(mainTabBarCoordinator)
 		rootNav.setViewControllers([mainTabBarCoordinator.rootViewController], animated: false)
 		return rootNav
 	}

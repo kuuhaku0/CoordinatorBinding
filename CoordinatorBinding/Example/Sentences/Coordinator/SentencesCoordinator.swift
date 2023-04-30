@@ -13,11 +13,13 @@ final class SentencesCoordinator: Coordinator {
 	var childCoordinators: [Coordinator] = []
 	lazy var rootViewController: UIViewController = createSentencesScene()
 	let navigationController: UINavigationController
+	let dataManager: SentenceBuilderDataManager
 
 	let actionables = SentencesActions()
 	private var cancelBag = CancelBag()
 
-	init(nav: UINavigationController) {
+	init(nav: UINavigationController, dataManager: SentenceBuilderDataManager) {
+		self.dataManager = dataManager
 		navigationController = nav
 	}
 
@@ -26,7 +28,6 @@ final class SentencesCoordinator: Coordinator {
 	}
 
 	func conform(rules: SentencesActions) -> SentencesActions {
-		
 		return actionables
 	}
 
@@ -43,11 +44,16 @@ extension SentencesCoordinator {
 		let reactions = viewModel.perform(action: actionables)
 
 		reactions.deleteSentence
-			.sink(receiveValue: actionables.deleteSentence.send(_:))
+			.sink { [unowned self] sentence in
+				actionables.deleteSentence.send(sentence)
+			}
 			.store(in: &cancelBag)
 
 		reactions.selectSentence
-			.sink(receiveValue: actionables.selectSentence.send(_:))
+			.sink { [unowned self] sentence in
+				dataManager.selectSentence(sentence)
+				actionables.selectSentence.send(sentence)
+			}
 			.store(in: &cancelBag)
 
 		return sentencesVC
