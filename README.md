@@ -6,4 +6,4 @@ VM-CD perform action-reaction
 ###
 VC-VM transform input-output
 
-we can call it pipes and connectors as well since Combine's terminology is sinks and faucets
+we can call it pipes and connectors as well since Combine's terminology are sinks and faucets
