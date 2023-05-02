@@ -11,4 +11,3 @@ typealias CancelBag = Set<AnyCancellable>
 
 typealias VoidPassthrough = PassthroughSubject<Void, Never>
 typealias JustPassthrough<T> = PassthroughSubject<T, Never>
-typealias JustPassthroughResponder<T> = JustPassthrough<JustPassthrough<T>>

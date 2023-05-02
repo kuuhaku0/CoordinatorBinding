@@ -7,16 +7,13 @@
 
 import UIKit
 
-final class SentenceDetailCoordinator: Coordinator {
-
-	var childCoordinators: [Coordinator] = []
-	lazy var rootViewController: UIViewController = createSentenceDetailScene()
+final class SentenceDetailCoordinator: NavigationCoordinator {
 
 	private let actionables = SentenceDetailActions()
 	private var cancelBag = CancelBag()
 
-	func start() {
-		print("Scene Detail Tab Start")
+	override func start() {
+		navigationController.setViewControllers([createSentenceDetailScene()], animated: false)
 	}
 
 	func comform(rules: SentencesActions) -> SentenceDetailActions {
@@ -26,13 +23,13 @@ final class SentenceDetailCoordinator: Coordinator {
 			}
 			.store(in: &cancelBag)
 
-		rules.deleteSentence
+		rules.sentenceDeleted
 			.sink { [unowned self] deletion in
 				actionables.sentenceDeleted.send(deletion)
 			}
 			.store(in: &cancelBag)
 
-		rules.onCreateSentence
+		rules.onNewSentenceCreated
 			.sink { [unowned self] sentence in
 				actionables.sentenceSelected.send(sentence)
 			}.store(in: &cancelBag)

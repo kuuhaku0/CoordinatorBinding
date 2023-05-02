@@ -25,12 +25,12 @@ class SentenceDetailViewModel {
 	private var cancelBag = CancelBag()
 
 	func perform(action: SentenceDetailActions) -> Reaction {
-		action.sentenceSelected.assign(to: &$selectedSentence)
+		action.sentenceSelected
+			.assign(to: &$selectedSentence)
 
 		action.sentenceDeleted
-			.drop(while: { self.selectedSentence != $0 })
-			.sink { [unowned self] _ in
-				selectedSentence = .none
+			.sink { [unowned self] deletedSentence in
+				selectedSentence = selectedSentence == deletedSentence ? .none : selectedSentence
 			}
 			.store(in: &cancelBag)
 

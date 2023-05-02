@@ -9,8 +9,8 @@ import Combine
 import UIKit
 
 struct SentencesViewInputs {
-	let didSelectSentenceAt = PassthroughSubject<Int, Never>()
-	let deleteSentenceAt = PassthroughSubject<Int, Never>()
+	let didSelectSentenceAt = JustPassthrough<Int>()
+	let deleteSentenceAt = JustPassthrough<(Int, (Bool) -> Void)>()
 }
 
 class SentenceViewController: UIViewController {
@@ -69,13 +69,12 @@ class SentenceViewController: UIViewController {
 				setNeedsUpdate = true
 			}.store(in: &cancelBag)
 
-		Publishers.Merge(
-			outputs.selectSentence,
-			outputs.deleteSentence
-		)
-		.sink { [unowned self] _ in
-			dataSource.apply(createSnapshot())
-		}.store(in: &cancelBag)
+
+		outputs.sentenceDeleted
+			.receive(on: DispatchQueue.main)
+			.sink { [unowned self] _ in
+				dataSource.apply(createSnapshot())
+			}.store(in: &cancelBag)
 	}
 
 	private func setupUI() {
@@ -112,8 +111,7 @@ extension SentenceViewController: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
 	-> UISwipeActionsConfiguration? {
 		let deleteAction = UIContextualAction(style: .destructive, title: nil) { [unowned self] _, _, completion in
-			events.deleteSentenceAt.send(indexPath.row)
-			completion(true)
+			events.deleteSentenceAt.send((indexPath.row, completion))
 		}
 		deleteAction.image = UIImage(systemName: "trash")
 		deleteAction.backgroundColor = .systemRed

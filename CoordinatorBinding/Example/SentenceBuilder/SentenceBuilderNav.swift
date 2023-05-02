@@ -13,6 +13,11 @@ struct SentenceBuilderNavOutput {
 	let backwardPressed = VoidPassthrough()
 }
 
+// View Model for injection Demo purposes
+struct SentenceBuilderNavViewModel {
+
+}
+
 class SentenceBuilderNav: UINavigationController {
 
 	enum ButtonStatus {
@@ -49,12 +54,26 @@ class SentenceBuilderNav: UINavigationController {
 
 	private var cancelBag = CancelBag()
 
+	private let viewModel: SentenceBuilderNavViewModel
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupUI()
 		setNavigationBarHidden(true, animated: false)
 	}
 
+	// MARK: - Init
+
+	init(viewModel: SentenceBuilderNavViewModel) {
+		self.viewModel = viewModel
+		super.init(nibName: nil, bundle: nil)
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
+	// Example of binding with viewController instead of viewModel
 	func transform(input: SentenceBuilderActions) -> SentenceBuilderNavOutput {
 		input.setNavButtonState
 			.sink { [unowned self] button in
@@ -78,9 +97,5 @@ class SentenceBuilderNav: UINavigationController {
 			make.leading.trailing.equalToSuperview().inset(16)
 			make.top.equalToSuperview { $0.safeAreaLayoutGuide }
 		}
-	}
-
-	@objc private func close() {
-		dismiss(animated: true)
 	}
 }

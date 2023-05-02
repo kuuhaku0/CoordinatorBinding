@@ -15,19 +15,19 @@ class TabBarViewModel {
 	let didSelectItemAt = JustPassthrough<Int>()
 
 	func perform(actions: SentencesActions) -> JustPassthrough<Int> {
-		actions
-			.onCreateSentence
-			.sink { [unowned self] newSentence in
-				words = newSentence.words
-			}.store(in: &cancelBag)
+		actions.onCreateSentence
+			.map { [] }
+			.assign(to: &$words)
 
-		actions
-			.selectSentence
+		Publishers
+			.Merge(actions.onNewSentenceCreated,
+				   actions.selectSentence
+			)
 			.map(\.words)
 			.assign(to: &$words)
 
 		actions
-			.deleteSentence
+			.sentenceDeleted
 			.sink { [unowned self] sentence in
 				words = words == sentence.words ? [] : words
 			}.store(in: &cancelBag)

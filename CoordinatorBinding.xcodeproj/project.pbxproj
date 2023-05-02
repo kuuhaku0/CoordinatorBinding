@@ -16,7 +16,7 @@
 		D26FBC4529FC96C7006B7E83 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC4429FC96C7006B7E83 /* TabBarViewController.swift */; };
 		D26FBC4729FC98DD006B7E83 /* TabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC4629FC98DD006B7E83 /* TabBarViewModel.swift */; };
 		D26FBC4B29FCA2C1006B7E83 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = D26FBC4A29FCA2C1006B7E83 /* SnapKit */; };
-		D26FBC4D29FCA35A006B7E83 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC4C29FCA35A006B7E83 /* TabBarCoordinator.swift */; };
+		D26FBC4D29FCA35A006B7E83 /* MainTabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC4C29FCA35A006B7E83 /* MainTabBarCoordinator.swift */; };
 		D26FBC4F29FCA6AA006B7E83 /* SentencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC4E29FCA6AA006B7E83 /* SentencesViewController.swift */; };
 		D26FBC5229FCA6ED006B7E83 /* SentencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC5129FCA6ED006B7E83 /* SentencesViewModel.swift */; };
 		D26FBC5429FCAC26006B7E83 /* SentencesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC5329FCAC26006B7E83 /* SentencesCoordinator.swift */; };
@@ -30,6 +30,10 @@
 		D26FBC6829FDCE10006B7E83 /* TypeAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC6729FDCE10006B7E83 /* TypeAlias.swift */; };
 		D26FBC6B29FDD681006B7E83 /* SentenceDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC6A29FDD681006B7E83 /* SentenceDetailCoordinator.swift */; };
 		D26FBC6F29FE2699006B7E83 /* SentenceDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC6E29FE2699006B7E83 /* SentenceDataManager.swift */; };
+		D26FBC8B2A006411006B7E83 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC8A2A006411006B7E83 /* NavigationCoordinator.swift */; };
+		D26FBC8D2A006452006B7E83 /* CoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC8C2A006452006B7E83 /* CoordinatorType.swift */; };
+		D26FBC902A006539006B7E83 /* AnyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC8F2A006539006B7E83 /* AnyCoordinator.swift */; };
+		D26FBC922A00666B006B7E83 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26FBC912A00666B006B7E83 /* TabBarCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,7 +47,7 @@
 		D26FBC4129FC8A42006B7E83 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		D26FBC4429FC96C7006B7E83 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		D26FBC4629FC98DD006B7E83 /* TabBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewModel.swift; sourceTree = "<group>"; };
-		D26FBC4C29FCA35A006B7E83 /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
+		D26FBC4C29FCA35A006B7E83 /* MainTabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarCoordinator.swift; sourceTree = "<group>"; };
 		D26FBC4E29FCA6AA006B7E83 /* SentencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentencesViewController.swift; sourceTree = "<group>"; };
 		D26FBC5129FCA6ED006B7E83 /* SentencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentencesViewModel.swift; sourceTree = "<group>"; };
 		D26FBC5329FCAC26006B7E83 /* SentencesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentencesCoordinator.swift; sourceTree = "<group>"; };
@@ -57,6 +61,10 @@
 		D26FBC6729FDCE10006B7E83 /* TypeAlias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAlias.swift; sourceTree = "<group>"; };
 		D26FBC6A29FDD681006B7E83 /* SentenceDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceDetailCoordinator.swift; sourceTree = "<group>"; };
 		D26FBC6E29FE2699006B7E83 /* SentenceDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceDataManager.swift; sourceTree = "<group>"; };
+		D26FBC8A2A006411006B7E83 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
+		D26FBC8C2A006452006B7E83 /* CoordinatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorType.swift; sourceTree = "<group>"; };
+		D26FBC8F2A006539006B7E83 /* AnyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCoordinator.swift; sourceTree = "<group>"; };
+		D26FBC912A00666B006B7E83 /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,9 +98,8 @@
 		D2029E6129F98701006B94D7 /* CoordinatorBinding */ = {
 			isa = PBXGroup;
 			children = (
-				D2029E6229F98701006B94D7 /* AppDelegate.swift */,
-				D2029E6429F98701006B94D7 /* SceneDelegate.swift */,
-				D26FBC4329FC9695006B7E83 /* Coordinator */,
+				D26FBC892A006354006B7E83 /* App */,
+				D26FBC4329FC9695006B7E83 /* Base */,
 				D26FBC3D29FC882E006B7E83 /* Example */,
 				D2029E6B29F98702006B94D7 /* Assets.xcassets */,
 				D2029E6D29F98703006B94D7 /* LaunchScreen.storyboard */,
@@ -104,8 +111,6 @@
 		D26FBC3D29FC882E006B7E83 /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				D26FBC6729FDCE10006B7E83 /* TypeAlias.swift */,
-				D26FBC5C29FCC196006B7E83 /* Constant.swift */,
 				D26FBC7029FE26A1006B7E83 /* DataManager */,
 				D26FBC3E29FC8875006B7E83 /* TabBar */,
 				D26FBC5029FCA6AF006B7E83 /* Sentences */,
@@ -124,13 +129,14 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
-		D26FBC4329FC9695006B7E83 /* Coordinator */ = {
+		D26FBC4329FC9695006B7E83 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				D26FBC3F29FC8A0B006B7E83 /* AppCoordinator.swift */,
-				D26FBC4129FC8A42006B7E83 /* Coordinator.swift */,
+				D26FBC6729FDCE10006B7E83 /* TypeAlias.swift */,
+				D26FBC5C29FCC196006B7E83 /* Constant.swift */,
+				D26FBC8E2A006466006B7E83 /* Coordinator */,
 			);
-			path = Coordinator;
+			path = Base;
 			sourceTree = "<group>";
 		};
 		D26FBC5029FCA6AF006B7E83 /* Sentences */ = {
@@ -192,7 +198,7 @@
 		D26FBC6D29FDDE50006B7E83 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
-				D26FBC4C29FCA35A006B7E83 /* TabBarCoordinator.swift */,
+				D26FBC4C29FCA35A006B7E83 /* MainTabBarCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -203,6 +209,28 @@
 				D26FBC6E29FE2699006B7E83 /* SentenceDataManager.swift */,
 			);
 			path = DataManager;
+			sourceTree = "<group>";
+		};
+		D26FBC892A006354006B7E83 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				D2029E6229F98701006B94D7 /* AppDelegate.swift */,
+				D2029E6429F98701006B94D7 /* SceneDelegate.swift */,
+				D26FBC3F29FC8A0B006B7E83 /* AppCoordinator.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		D26FBC8E2A006466006B7E83 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				D26FBC4129FC8A42006B7E83 /* Coordinator.swift */,
+				D26FBC8F2A006539006B7E83 /* AnyCoordinator.swift */,
+				D26FBC8C2A006452006B7E83 /* CoordinatorType.swift */,
+				D26FBC8A2A006411006B7E83 /* NavigationCoordinator.swift */,
+				D26FBC912A00666B006B7E83 /* TabBarCoordinator.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -283,9 +311,11 @@
 			files = (
 				D26FBC5F29FDA44D006B7E83 /* SentenceBuilderCoordinator.swift in Sources */,
 				D26FBC6629FDA58B006B7E83 /* SentenceBuilderNav.swift in Sources */,
+				D26FBC922A00666B006B7E83 /* TabBarCoordinator.swift in Sources */,
 				D26FBC5829FCB9CA006B7E83 /* SentenceDetailViewModel.swift in Sources */,
 				D26FBC4029FC8A0B006B7E83 /* AppCoordinator.swift in Sources */,
 				D26FBC6429FDA49C006B7E83 /* WordInputViewController.swift in Sources */,
+				D26FBC902A006539006B7E83 /* AnyCoordinator.swift in Sources */,
 				D26FBC5429FCAC26006B7E83 /* SentencesCoordinator.swift in Sources */,
 				D26FBC6B29FDD681006B7E83 /* SentenceDetailCoordinator.swift in Sources */,
 				D26FBC4229FC8A42006B7E83 /* Coordinator.swift in Sources */,
@@ -293,11 +323,13 @@
 				D2029E6329F98701006B94D7 /* AppDelegate.swift in Sources */,
 				D26FBC6229FDA476006B7E83 /* SentenceBuilderViewModel.swift in Sources */,
 				D26FBC4F29FCA6AA006B7E83 /* SentencesViewController.swift in Sources */,
-				D26FBC4D29FCA35A006B7E83 /* TabBarCoordinator.swift in Sources */,
+				D26FBC4D29FCA35A006B7E83 /* MainTabBarCoordinator.swift in Sources */,
+				D26FBC8B2A006411006B7E83 /* NavigationCoordinator.swift in Sources */,
 				D26FBC6829FDCE10006B7E83 /* TypeAlias.swift in Sources */,
 				D26FBC6F29FE2699006B7E83 /* SentenceDataManager.swift in Sources */,
 				D26FBC4529FC96C7006B7E83 /* TabBarViewController.swift in Sources */,
 				D26FBC5D29FCC196006B7E83 /* Constant.swift in Sources */,
+				D26FBC8D2A006452006B7E83 /* CoordinatorType.swift in Sources */,
 				D26FBC5229FCA6ED006B7E83 /* SentencesViewModel.swift in Sources */,
 				D26FBC4729FC98DD006B7E83 /* TabBarViewModel.swift in Sources */,
 				D2029E6529F98701006B94D7 /* SceneDelegate.swift in Sources */,

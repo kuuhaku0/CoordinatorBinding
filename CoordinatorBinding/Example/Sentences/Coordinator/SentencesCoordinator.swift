@@ -8,28 +8,24 @@
 import Combine
 import UIKit
 
-final class SentencesCoordinator: Coordinator {
-	var childCoordinators: [Coordinator] = []
-	lazy var rootViewController: UIViewController = createSentencesScene()
-	let navigationController: UINavigationController
-	let dataManager: SentenceBuilderDataManager
+final class SentencesCoordinator: NavigationCoordinator {
 
-	let actionables = SentencesActions()
+	private let dataManager: SentenceBuilderDataManager
+	private let actionables = SentencesActions()
 	private var cancelBag = CancelBag()
 
-	init(nav: UINavigationController, dataManager: SentenceBuilderDataManager) {
+	init(dataManager: SentenceBuilderDataManager) {
 		self.dataManager = dataManager
-		navigationController = nav
 	}
 
-	func start() {
-		print(String(describing: self), "Start")
+	override func start() {
+		navigationController.setViewControllers([createSentencesScene()], animated: false)
 	}
 
-	func conform(rules: SentencesActions) -> SentencesActions {
-		rules.onCreateSentence
+	func comform(rules: SentencesActions) -> SentencesActions {
+		rules.onNewSentenceCreated
 			.sink { [unowned self] in
-				actionables.onCreateSentence.send($0)
+				actionables.onNewSentenceCreated.send($0)
 			}
 			.store(in: &cancelBag)
 
@@ -39,13 +35,13 @@ final class SentencesCoordinator: Coordinator {
 
 extension SentencesCoordinator {
 	private func createSentencesScene() -> UIViewController {
-		let viewModel = SentencesViewModel()
+		let viewModel = SentencesViewModel(sentences: dataManager.allSentences)
 		let sentencesVC = SentenceViewController(viewModel: viewModel)
 
 		let reactions = viewModel.perform(action: actionables)
 
-		reactions.deleteSentence
-			.sink(receiveValue: actionables.deleteSentence.send(_:))
+		reactions.sentenceDeleted
+			.sink(receiveValue: actionables.sentenceDeleted.send(_:))
 			.store(in: &cancelBag)
 
 		reactions.selectSentence

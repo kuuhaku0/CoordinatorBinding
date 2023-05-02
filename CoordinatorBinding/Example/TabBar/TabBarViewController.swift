@@ -37,26 +37,22 @@ class TabBarViewController: UITabBarController {
 		return collectionView
 	}()
 
-	private let viewModel: TabBarViewModel
+	private var viewModel: TabBarViewModel!
 	private var cancelBag = CancelBag()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupUI()
-		setupNav()
-		bindViewModel()
 	}
 
-	init(viewModel: TabBarViewModel) {
+	// Setting view model first approach
+	// Force `bind` call by force unwrapping viewModel
+	func bind(viewModel: TabBarViewModel) {
 		self.viewModel = viewModel
-		super.init(nibName: nil, bundle: nil)
-	}
 
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
+		collectionView.dataSource = dataSource
+		dataSource.apply(currentSnapshot)
 
-	private func bindViewModel() {
 		viewModel.$words
 			.receive(on: DispatchQueue.main)
 			.sink { [unowned self] words in
@@ -73,18 +69,6 @@ class TabBarViewController: UITabBarController {
 			make.leading.trailing.equalToSuperview()
 			make.bottom.equalToSuperview { $0.safeAreaLayoutGuide }.inset(48)
 		}
-
-		collectionView.dataSource = dataSource
-		dataSource.apply(currentSnapshot)
-	}
-
-	private func setupNav() {
-		let rNavBtn = UIBarButtonItem(title: "Shuffle", style: .done, target: self, action: #selector(shuffle))
-		navigationItem.setRightBarButton(rNavBtn, animated: false)
-	}
-
-	@objc private func shuffle() {
-
 	}
 
 	private func makeDataSource() -> DataSource {

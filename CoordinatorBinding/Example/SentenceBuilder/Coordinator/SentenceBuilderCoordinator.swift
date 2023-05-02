@@ -18,32 +18,56 @@ protocol SentenceBuildable: AnyObject {
 	var backwardPassthrough: VoidPassthrough { get }
 }
 
-final class SentenceBuilderCoordinator: Coordinator {
-	var childCoordinators: [Coordinator] = []
-	lazy var rootViewController: UIViewController = navigationController
+final class SentenceBuilderCoordinator: NavigationCoordinator {
 
 	private let dataManager: SentenceBuilderDataManager
 	private let actionables = SentenceBuilderActions()
 	private var cancelBag = CancelBag()
 
-	lazy var navigationController = createNavigator()
 	private var currentScene: SentenceBuildable? {
 		navigationController.topViewController as? SentenceBuildable
 	}
 
 	init(dataManager: SentenceBuilderDataManager) {
 		self.dataManager = dataManager
+
+		// Initialize with a custom navigation controller w/ viewModel
+		let viewModel = SentenceBuilderNavViewModel()
+		let nav = SentenceBuilderNav(viewModel: viewModel)
+
+		// init super passing in custom nav
+		super.init(viewController: nav, childCoordinators: [])
+
+		// Perform setup code
+		nav.modalPresentationStyle = .fullScreen
+		setupNavigationController(nav: nav)
 	}
 
-	func start() {
+	override func start() {
+		// Example showing possible bindings with dataManager
 		let dataBindings = dataManager.bind()
 
 		dataBindings.newSentenceCreated
 			.sink { [unowned self] sentence in
+				navigationController.dismiss(animated: true)
 				actionables.onTermination.send(sentence)
 			}.store(in: &cancelBag)
 
 		navigationController.setViewControllers([createBuildWordScene(word: nil)], animated: false)
+	}
+
+	private func setupNavigationController(nav: SentenceBuilderNav) {
+		let outputs = nav.transform(input: actionables)
+
+		outputs.backwardPressed
+			.sink { [unowned self] in
+				currentScene?.backwardPassthrough.send()
+			}.store(in: &cancelBag)
+
+		outputs.forwardPressed
+			.sink { [unowned self] in
+				currentScene?.forwardPassthrough.send()
+			}.store(in: &cancelBag)
 	}
 
 	// Example of single input
@@ -58,8 +82,8 @@ final class SentenceBuilderCoordinator: Coordinator {
 	}
 
 	func prepareNextScene() {
-		if dataManager.currentWords.indices.contains(navigationController.viewControllers.count) {
-			let nextWord = dataManager.currentWords[navigationController.viewControllers.count]
+		if dataManager.currentEdit.indices.contains(navigationController.viewControllers.count) {
+			let nextWord = dataManager.currentEdit[navigationController.viewControllers.count]
 			let next = createBuildWordScene(word: nextWord)
 			navigationController.pushViewController(next, animated: true)
 		} else {
@@ -69,9 +93,9 @@ final class SentenceBuilderCoordinator: Coordinator {
 	}
 
 	private func constructNavStack(selection: Int) {
-		guard dataManager.currentWords.indices.contains(selection) else { return }
+		guard dataManager.currentEdit.indices.contains(selection) else { return }
 		let stack = dataManager
-			.currentWords[0...selection]
+			.currentEdit[0...selection]
 			.map { createBuildWordScene(word: $0) }
 
 		navigationController.setViewControllers(stack, animated: false)
@@ -92,22 +116,6 @@ final class SentenceBuilderCoordinator: Coordinator {
 }
 
 extension SentenceBuilderCoordinator {
-	private func createNavigator() -> SentenceBuilderNav {
-		let nav = SentenceBuilderNav()
-		let outputs = nav.transform(input: actionables)
-
-		outputs.backwardPressed
-			.sink { [unowned self] in
-				currentScene?.backwardPassthrough.send()
-			}.store(in: &cancelBag)
-
-		outputs.forwardPressed
-			.sink { [unowned self] in
-				currentScene?.forwardPassthrough.send()
-			}.store(in: &cancelBag)
-
-		return nav
-	}
 
 	private func createBuildWordScene(word: Word?) -> UIViewController {
 		let startVC = WordInputViewController(word: word)
@@ -132,7 +140,10 @@ extension SentenceBuilderCoordinator {
 		reactions.replaceWord
 			.sink { [unowned self] replacement in
 				prepareNextScene()
-				dataManager.replaceWord(old: replacement.oldWord, new: replacement.newWord)
+				dataManager.replaceWord(
+					old: replacement.oldWord,
+					new: replacement.newWord
+				)
 			}
 			.store(in: &cancelBag)
 
